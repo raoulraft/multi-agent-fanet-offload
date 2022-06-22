@@ -207,4 +207,4 @@ pip install git+https://github.com/Stable-Baselines-Team/stable-baselines3-contr
 - Change the state
 - Change the action
 - Change the reward
-- Change the observation epoch (currently the agent acts every single timestep, which means that the agent acts even when a zone state change event is executed)
+- Change the decision epoch
