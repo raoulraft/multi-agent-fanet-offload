@@ -6,7 +6,8 @@ import os
 from stable_baselines3 import PPO, A2C, TD3, SAC, DQN, HerReplayBuffer, HER, DDPG
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.env_util import make_vec_env
-from sb3_contrib import TQC, QRDQN, MaskablePPO, TRPO, ARS
+from sb3_contrib import TQC, QRDQN, MaskablePPO, TRPO, ARS, RecurrentPPO
+# pip install git+https://github.com/Stable-Baselines-Team/stable-baselines3-contrib
 from uav_env import parallel_env
 from result_buffer import ResultBuffer
 from supersuit import frame_stack_v1, normalize_obs_v0

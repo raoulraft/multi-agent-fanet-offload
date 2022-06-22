@@ -95,6 +95,8 @@ class parallel_env(ParallelEnv):
             else {agent: Discrete(10) for agent in self.possible_agents}
         self._observation_spaces = {agent: Box(low=0, high=1, shape=(self.feature_size,), dtype=np.float32)
                                     for agent in self.possible_agents}
+
+
         # tot, proc, ol
         self.avg_tot_delay = [0, 0, 0]
         self.counter_avg_td = [0, 0, 0]
@@ -108,6 +110,8 @@ class parallel_env(ParallelEnv):
         self.current_delay = []
         # computes mean offloading probabilities
         self.offloading_probabilities = []
+        # computes mean reward
+        self.mean_reward = []
 
         # normalize observation between 0 and 1
         self.max_observed_queue = 1
@@ -171,6 +175,7 @@ class parallel_env(ParallelEnv):
         self.delay = []
         self.current_delay = []
         self.offloading_probabilities = []
+        self.mean_reward = []
         self.agents = self.possible_agents[:]
         self.t = 0
         self.steps = 0
@@ -240,11 +245,13 @@ class parallel_env(ParallelEnv):
 
         # retrieve rewards
         reward = - statistics.mean(self.current_delay)
+        self.mean_reward.append(reward)
         self.tot_reward += reward
         self.current_delay = []
         # rewards for all agents are placed in the rewards dictionary to be returned
         # rewards = {}
         rewards = {agent: reward for agent in self.agents}
+
 
         '''
         step(action) takes in an action for each agent and should return the
@@ -273,6 +280,7 @@ class parallel_env(ParallelEnv):
         if env_done:
             self.agents = []
             mean_delay = statistics.mean(self.delay)
+            mean_reward = statistics.mean(self.mean_reward)
             jitter = statistics.variance(self.delay, mean_delay)
             off_probs = [drone.offloading_prob for drone in self.drones]
             max_q = max([drone.max_queue_length for drone in self.drones])
@@ -284,6 +292,7 @@ class parallel_env(ParallelEnv):
             arrived_p = sum([drone.arrived_pkts for drone in self.drones])
             lost_percentage = lost_p / arrived_p
             wandb.log({"episode reward": self.tot_reward}, commit=False)
+            wandb.log({"mean reward": mean_reward}, commit=False)
             wandb.log({"lost packet percentage": lost_percentage}, commit=False)
             wandb.log({"max processing queue": max_q}, commit=False)
             wandb.log({"max offloading queue": max_q_o}, commit=False)
@@ -295,9 +304,9 @@ class parallel_env(ParallelEnv):
             wandb.log({"jitter": jitter}, commit=False)
             wandb.log({"episode mean delay": mean_delay}, commit=True)
 
-            if self.save_res:
-                self.res_buffer.save_run_results(avg_delay=mean_delay, jitter=jitter, reward=self.tot_reward,
-                                                 offloading_ratio=mean_off_probs, lost_jobs=lost_percentage)
+            # if self.save_res:
+            #    self.res_buffer.save_run_results(avg_delay=mean_delay, jitter=jitter, reward=self.tot_reward,
+            #                                     offloading_ratio=mean_off_probs, lost_jobs=lost_percentage)
 
         return observations, rewards, dones, infos
 

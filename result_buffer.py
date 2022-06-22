@@ -8,7 +8,7 @@ import os
 class ResultBuffer:
 
     def __init__(self, min_n_drone, max_n_drone, min_mu, max_mu, step_mu, net_slice, change_processing, alg):
-        # TODO: add run id for saving the csv file to that directory (and avoid overwriting old runs)
+        # TODO: send to resultbuffer the values already averaged.
         self.id = random()
         self.dir = "./csv/"
         self.var = "p" if change_processing else "o"  # for the filename
@@ -22,6 +22,7 @@ class ResultBuffer:
         self.max_mu = max_mu
         self.min_mu = min_mu
         self.alg = alg
+
 
         """
         self.delay = np.zeros((self.len_n, self.len_mu), )  # delay final results
