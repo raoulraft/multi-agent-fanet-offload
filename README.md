@@ -1,4 +1,4 @@
-# multi-agent-fanet-offload# UAV Offloading optimization using Deep Reinforcement Learning
+# UAV Offloading optimization using Multi-Agent Deep Reinforcement Learning #
 ## Introduction
 In this scenario, each **UAV** is equipped with a **computing element (CE)** that provides computing facilities to **packets** arriving from devices (sensors, smartphones, etc.) installed on the ground area it is covering. 
 
