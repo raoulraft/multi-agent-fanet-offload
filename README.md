@@ -45,7 +45,7 @@ Challenge: offloaded packets suffer an additional delay due to the transmission 
 
 ## Code
 
-1. Environment is initialized (using values from input.py)
+1. Environment is initialized
 2. Agent is initialized
 3. First observation is returned to the agent using state = env.reset()
 4. The agent selects an action using model.predict(state)
@@ -94,7 +94,7 @@ A packet is offloaded by the CE. The packet is offloaded from the offloading que
 The state of the zone changes (from 0 to 1 and viceversa). This in turn also causes the packet arrival rate from the zones to change. Also, *Time.Matrix.update_matrix( )* is called, in order to schedule the next change zone state event
 
 ###### End of run
-When env.t reaches its maximum value, which is usually set inside input.py, env.step returns *done = True* (in addition to the usual next_state and reward). When this happens, *env.save_history( )* is called, which saves the main episode metrics in *wandb*.
+When env.t reaches its maximum value, env.step returns *done = True* (in addition to the usual next_state and reward). When this happens, the main episode metrics are saved in *wandb*.
 
 ### Time Matrix
 The way the time matrix works is the following:
@@ -200,6 +200,7 @@ pip install gym
 Install stable-baselines to use state-of-art agents such as PPO, A2C and DQN
 ```
 pip install stable-baselines3
+pip install git+https://github.com/Stable-Baselines-Team/stable-baselines3-contrib
 ```
 
 ## Things to try out
