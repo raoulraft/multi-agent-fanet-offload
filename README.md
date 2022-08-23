@@ -203,8 +203,3 @@ pip install stable-baselines3
 pip install git+https://github.com/Stable-Baselines-Team/stable-baselines3-contrib
 ```
 
-## Things to try out
-- Change the state
-- Change the action
-- Change the reward
-- Change the decision epoch
